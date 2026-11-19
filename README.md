@@ -23,6 +23,30 @@ Phase 1: find + match                          Phase 2: act
 | `calendeal/main.py` | _tbd_ | CLI that runs the pipeline. |
 | `profiles/*.json` | everyone | One profile per test user (interests, location, budget). |
 
+## What works today
+
+The dashed box isn't built yet: right now deals come from hand-entered sample data. Adding to Google Calendar works once `credentials.json` is set up (see below).
+
+```mermaid
+flowchart LR
+    A["Sample deals<br/>(typed by hand)"] --> C
+    B["Student profile<br/>interests, stores, avoid list"] --> C
+    X["Real store scrapers<br/>Maverik, Old Navy..."] -.-> A
+
+    C["Remove deals on<br/>the avoid list"] --> D["Score deals against<br/>the profile"]
+    D --> E{"Claude API<br/>key set?"}
+    E -- Yes --> F["Claude picks the best deals<br/>and writes a reason for each"]
+    E -- No --> G["Keep the<br/>top scores"]
+    F --> H["Print picks<br/>in the terminal"]
+    G --> H
+    H --> I{"Dry run?"}
+    I -- Yes --> J["Stop here"]
+    I -- No --> K["Add to 'CalenDeal Agent' calendar<br/>all-day events + reminders<br/>no duplicates"]
+
+    classDef todo stroke-dasharray: 5 5,color:#888
+    class X todo
+```
+
 ## Quickstart
 
 ```bash
@@ -49,3 +73,4 @@ Both files are in `.gitignore` — never commit them. Each teammate can download
 - Branch per feature: `git checkout -b scraper-maverik`, open a PR into `main`.
 - Add a new source by copying `calendeal/sources/sample.py` and registering it in `calendeal/sources/__init__.py`.
 - Run tests before pushing: `pytest`
+
