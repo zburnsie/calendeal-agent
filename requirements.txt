@@ -1,0 +1,9 @@
+google-api-python-client>=2.130
+google-auth-oauthlib>=1.2
+google-auth-httplib2>=0.2
+anthropic>=0.40
+scikit-learn>=1.5
+requests>=2.32
+beautifulsoup4>=4.12
+python-dotenv>=1.0
+pytest>=8.0

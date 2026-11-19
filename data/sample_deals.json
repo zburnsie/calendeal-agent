@@ -1,0 +1,11 @@
+[
+  {"title": "BOGO kolaches", "store": "Maverik", "start": "2026-11-23", "category": "food", "channel": "in store", "description": "Buy one kolache, get one free breakfast pastry"},
+  {"title": "Pizza 2-for-1", "store": "Local pizza shop", "start": "2026-11-24", "category": "food", "channel": "in store", "description": "Two large pizzas for the price of one"},
+  {"title": "Old Navy sale", "store": "Old Navy", "start": "2026-11-25", "end": "2026-11-29", "category": "clothing", "channel": "in store & online", "description": "Up to 50% off sitewide"},
+  {"title": "Pie deal", "store": "Grocery store", "start": "2026-11-25", "category": "grocery", "channel": "in store", "description": "Pumpkin pies discounted"},
+  {"title": "Free hot cocoa", "store": "Maverik", "start": "2026-11-27", "category": "food", "channel": "in store", "description": "Free small hot cocoa, hot drinks"},
+  {"title": "Doorbusters", "store": "Electronics store", "start": "2026-11-27", "category": "electronics", "channel": "in store", "description": "Headphones, TVs, laptops"},
+  {"title": "Free shipping weekend", "store": "Online stores", "start": "2026-11-28", "end": "2026-11-29", "category": "shopping", "channel": "online", "description": "Free shipping, no minimum"},
+  {"title": "Shop small", "store": "Local stores", "start": "2026-11-28", "category": "shopping", "channel": "in store", "description": "Small Business Saturday discounts"},
+  {"title": "Movie deal", "store": "Theater", "start": "2026-11-29", "category": "entertainment", "channel": "in store", "description": "Discount matinee movies tickets"}
+]

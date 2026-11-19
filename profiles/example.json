@@ -1,0 +1,9 @@
+{
+  "name": "Example Student",
+  "interests": ["cheap food", "pizza", "breakfast pastries", "hot drinks", "movies", "free shipping"],
+  "stores": ["Maverik", "Old Navy"],
+  "avoid": ["grocery"],
+  "location": "Provo, UT",
+  "prefers_online": false,
+  "max_deals_per_week": 6
+}
