@@ -14,6 +14,18 @@ Template:
 
 ---
 
+## 2026-11-21 — Claude (matching check) — branch `claude/v1`
+
+**Did:** Added `scripts/try_profiles.py`: three very different test users (Foodie Fran: food/entertainment, avoids alcohol; Household Hank: grocery/car/home, Tide + Colgate only; Gamer Gwen: electronics/gifts, online). It prints each user's weekly picks and the top results for 3 example chat questions, then runs PASS/FAIL checks. Added 14 more made-up sample deals (34 total), including traps the matcher must skip: a beer deal, other detergent/toothpaste brands, a flagged link, and an expired deal. All checks pass with TF-IDF; the 3 users share 0% of their picks. 35 tests.
+
+**Left / next:** Run it with `--retriever embed` and `--llm` on a machine with the models/key, and on the real snapshot (`--snapshot latest`). Record the numbers in `docs/EVALUATION.md`.
+
+**Broken or unsure:** `radius_miles` / `location` are saved but not used to filter deals yet (everything in the sample is Provo/Orem). Worth adding once real local deals come in.
+
+**Files touched:** `scripts/try_profiles.py` (new), `tests/test_try_profiles.py` (new), `data/sample_deals.json`, `docs/EVALUATION.md`, `README.md`.
+
+---
+
 ## 2026-11-21 — Claude (v1 build) — branch `claude/v1`
 
 **Did:**

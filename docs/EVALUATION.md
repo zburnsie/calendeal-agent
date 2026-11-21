@@ -23,7 +23,9 @@ Use one fixed snapshot (`data/snapshots/<week>.json`) and the 3 demo profiles in
 
 Keep the snapshot and profiles fixed across runs. Record results in a table in this file, with the date and the git commit for each run.
 
-`python -m calendeal.main match --snapshot latest --profile profiles/X.json --retriever tfidf|embed --no-llm` switches between runs.
+**Quick check first:** `python scripts/try_profiles.py` runs three very different test users (Foodie Fran, Household Hank, Gamer Gwen) against the same deals. It prints their picks and example chat searches, then PASS/FAIL checks on categories, avoid list, brand loyalty, expired deals, flagged links, the weekly limit, and overlap between users (≤ 20%). Add `--retriever embed`, `--llm`, or `--snapshot latest` to compare runs. Exit code 1 means something broke.
+
+`python -m calendeal.main match --snapshot latest --profile profiles/X.json --retriever tfidf|embed --no-llm` switches between runs for one profile.
 
 ## Results
 

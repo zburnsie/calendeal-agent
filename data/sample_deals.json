@@ -1,22 +1,343 @@
 [
-  {"title": "BOGO kolaches", "store": "Maverik", "start": "2026-11-23", "category": "food", "channel": "in store", "location": "Provo, UT", "description": "Buy one kolache, get one free breakfast pastry"},
-  {"title": "Pizza 2-for-1", "store": "Local pizza shop", "start": "2026-11-24", "category": "food", "channel": "in store", "location": "Provo, UT", "description": "Two large pizzas for the price of one"},
-  {"title": "Old Navy sale", "store": "Old Navy", "start": "2026-11-25", "end": "2026-11-29", "category": "clothing", "channel": "in store & online", "url": "https://oldnavy.gap.com/", "promo_code": "SAVEMORE", "description": "Up to 50% off sitewide"},
-  {"title": "Pie deal", "store": "Grocery store", "start": "2026-11-25", "category": "grocery", "channel": "in store", "location": "Orem, UT", "description": "Pumpkin pies discounted"},
-  {"title": "Free hot cocoa", "store": "Maverik", "start": "2026-11-27", "category": "food", "channel": "in store", "location": "Provo, UT", "description": "Free small hot cocoa, hot drinks"},
-  {"title": "Doorbusters", "store": "Electronics store", "start": "2026-11-27", "category": "electronics", "channel": "in store", "description": "Headphones, TVs, laptops"},
-  {"title": "Free shipping weekend", "store": "Online stores", "start": "2026-11-28", "end": "2026-11-29", "category": "shopping", "channel": "online", "description": "Free shipping, no minimum"},
-  {"title": "Shop small", "store": "Local stores", "start": "2026-11-28", "category": "shopping", "channel": "in store", "location": "Provo, UT", "description": "Small Business Saturday discounts"},
-  {"title": "Movie deal", "store": "Theater", "start": "2026-11-29", "category": "entertainment", "channel": "in store", "location": "Provo, UT", "description": "Discount matinee movies tickets"},
-  {"title": "$2 off detergent", "store": "Grocery store", "start": "2026-11-23", "end": "2026-11-30", "category": "grocery", "channel": "in store", "location": "Provo, UT", "brand": "Tide", "product_type": "detergent", "description": "Tide liquid laundry detergent, $2 off 92 oz"},
-  {"title": "Detergent 30% off", "store": "Grocery store", "start": "2026-11-23", "end": "2026-11-30", "category": "grocery", "channel": "in store", "location": "Provo, UT", "brand": "Persil", "product_type": "detergent", "description": "Persil laundry detergent 30% off"},
-  {"title": "Toothpaste 3 for $10", "store": "Drugstore", "start": "2026-11-24", "end": "2026-12-01", "category": "health & beauty", "channel": "in store", "location": "Orem, UT", "brand": "Crest", "product_type": "toothpaste", "description": "Crest toothpaste, 3 for $10"},
-  {"title": "Oil change $20 off", "store": "Quick lube", "start": "2026-11-23", "end": "2026-12-06", "category": "car", "channel": "in store", "location": "Provo, UT", "promo_code": "FALL20", "description": "Full synthetic oil change, $20 off with code"},
-  {"title": "Burrito bowl BOGO (mailer)", "store": "Mexican grill", "start": "2026-11-30", "end": "2026-12-04", "category": "food", "channel": "in store", "location": "Provo, UT", "description": "Buy one entree get one free, mailer coupon"},
-  {"title": "Coffee half off after 2pm", "store": "Coffee shop", "start": "2026-11-23", "end": "2026-11-27", "category": "food", "channel": "in store", "location": "Provo, UT", "description": "Half-price drinks after 2pm, hot drinks and lattes"},
-  {"title": "Running shoes 40% off", "store": "Online stores", "start": "2026-11-27", "end": "2026-12-02", "category": "clothing", "channel": "online", "url": "https://example.com/shoes", "promo_code": "RUN40", "description": "Running shoes and athletic apparel, 40% off with code"},
-  {"title": "Paper towels bulk deal", "store": "Warehouse club", "start": "2026-11-26", "end": "2026-12-03", "category": "grocery", "channel": "in store & online", "brand": "Bounty", "product_type": "paper towels", "description": "Bounty paper towels 12-pack, $5 off"},
-  {"title": "Cyber Monday laptop deal", "store": "Online stores", "start": "2026-11-30", "category": "electronics", "channel": "online", "url": "https://example.com/laptop", "description": "Student laptops up to $300 off"},
-  {"title": "Holiday gift sets 25% off", "store": "Department store", "start": "2026-11-27", "end": "2026-12-06", "category": "gifts", "channel": "in store & online", "promo_code": "GIFT25", "description": "Gift sets, stocking stuffers, Christmas gifts"},
-  {"title": "Expired example deal", "store": "Maverik", "start": "2026-11-01", "end": "2026-11-05", "category": "food", "channel": "in store", "description": "Should never show up: already expired"}
+ {
+  "title": "BOGO kolaches",
+  "store": "Maverik",
+  "start": "2026-11-23",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Buy one kolache, get one free breakfast pastry"
+ },
+ {
+  "title": "Pizza 2-for-1",
+  "store": "Local pizza shop",
+  "start": "2026-11-24",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Two large pizzas for the price of one"
+ },
+ {
+  "title": "Old Navy sale",
+  "store": "Old Navy",
+  "start": "2026-11-25",
+  "end": "2026-11-29",
+  "category": "clothing",
+  "channel": "in store & online",
+  "url": "https://oldnavy.gap.com/",
+  "promo_code": "SAVEMORE",
+  "description": "Up to 50% off sitewide"
+ },
+ {
+  "title": "Pie deal",
+  "store": "Grocery store",
+  "start": "2026-11-25",
+  "category": "grocery",
+  "channel": "in store",
+  "location": "Orem, UT",
+  "description": "Pumpkin pies discounted"
+ },
+ {
+  "title": "Free hot cocoa",
+  "store": "Maverik",
+  "start": "2026-11-27",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Free small hot cocoa, hot drinks"
+ },
+ {
+  "title": "Doorbusters",
+  "store": "Electronics store",
+  "start": "2026-11-27",
+  "category": "electronics",
+  "channel": "in store",
+  "description": "Headphones, TVs, laptops"
+ },
+ {
+  "title": "Free shipping weekend",
+  "store": "Online stores",
+  "start": "2026-11-28",
+  "end": "2026-11-29",
+  "category": "shopping",
+  "channel": "online",
+  "description": "Free shipping, no minimum"
+ },
+ {
+  "title": "Shop small",
+  "store": "Local stores",
+  "start": "2026-11-28",
+  "category": "shopping",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Small Business Saturday discounts"
+ },
+ {
+  "title": "Movie deal",
+  "store": "Theater",
+  "start": "2026-11-29",
+  "category": "entertainment",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Discount matinee movies tickets"
+ },
+ {
+  "title": "$2 off detergent",
+  "store": "Grocery store",
+  "start": "2026-11-23",
+  "end": "2026-11-30",
+  "category": "grocery",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "brand": "Tide",
+  "product_type": "detergent",
+  "description": "Tide liquid laundry detergent, $2 off 92 oz"
+ },
+ {
+  "title": "Detergent 30% off",
+  "store": "Grocery store",
+  "start": "2026-11-23",
+  "end": "2026-11-30",
+  "category": "grocery",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "brand": "Persil",
+  "product_type": "detergent",
+  "description": "Persil laundry detergent 30% off"
+ },
+ {
+  "title": "Toothpaste 3 for $10",
+  "store": "Drugstore",
+  "start": "2026-11-24",
+  "end": "2026-12-01",
+  "category": "health & beauty",
+  "channel": "in store",
+  "location": "Orem, UT",
+  "brand": "Crest",
+  "product_type": "toothpaste",
+  "description": "Crest toothpaste, 3 for $10"
+ },
+ {
+  "title": "Oil change $20 off",
+  "store": "Quick lube",
+  "start": "2026-11-23",
+  "end": "2026-12-06",
+  "category": "car",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "promo_code": "FALL20",
+  "description": "Full synthetic oil change, $20 off with code"
+ },
+ {
+  "title": "Burrito bowl BOGO (mailer)",
+  "store": "Mexican grill",
+  "start": "2026-11-30",
+  "end": "2026-12-04",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Buy one entree get one free, mailer coupon"
+ },
+ {
+  "title": "Coffee half off after 2pm",
+  "store": "Coffee shop",
+  "start": "2026-11-23",
+  "end": "2026-11-27",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Half-price drinks after 2pm, hot drinks and lattes"
+ },
+ {
+  "title": "Running shoes 40% off",
+  "store": "Online stores",
+  "start": "2026-11-27",
+  "end": "2026-12-02",
+  "category": "clothing",
+  "channel": "online",
+  "url": "https://example.com/shoes",
+  "promo_code": "RUN40",
+  "description": "Running shoes and athletic apparel, 40% off with code"
+ },
+ {
+  "title": "Paper towels bulk deal",
+  "store": "Warehouse club",
+  "start": "2026-11-26",
+  "end": "2026-12-03",
+  "category": "grocery",
+  "channel": "in store & online",
+  "brand": "Bounty",
+  "product_type": "paper towels",
+  "description": "Bounty paper towels 12-pack, $5 off"
+ },
+ {
+  "title": "Cyber Monday laptop deal",
+  "store": "Online stores",
+  "start": "2026-11-30",
+  "category": "electronics",
+  "channel": "online",
+  "url": "https://example.com/laptop",
+  "description": "Student laptops up to $300 off"
+ },
+ {
+  "title": "Holiday gift sets 25% off",
+  "store": "Department store",
+  "start": "2026-11-27",
+  "end": "2026-12-06",
+  "category": "gifts",
+  "channel": "in store & online",
+  "promo_code": "GIFT25",
+  "description": "Gift sets, stocking stuffers, Christmas gifts"
+ },
+ {
+  "title": "Expired example deal",
+  "store": "Maverik",
+  "start": "2026-11-01",
+  "end": "2026-11-05",
+  "category": "food",
+  "channel": "in store",
+  "description": "Should never show up: already expired"
+ },
+ {
+  "title": "Taco Tuesday $1 tacos",
+  "store": "Taco stand",
+  "start": "2026-11-24",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Street tacos $1 each every Tuesday"
+ },
+ {
+  "title": "Date night: 2 movie tickets + popcorn",
+  "store": "Theater",
+  "start": "2026-11-27",
+  "end": "2026-12-03",
+  "category": "entertainment",
+  "channel": "in store",
+  "location": "Orem, UT",
+  "description": "Two tickets and a large popcorn for $20, date night movies"
+ },
+ {
+  "title": "Latte punch card double stamps",
+  "store": "Coffee shop",
+  "start": "2026-11-23",
+  "end": "2026-11-29",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Double stamps on every coffee and latte this week"
+ },
+ {
+  "title": "Happy hour beer specials",
+  "store": "Sports bar",
+  "start": "2026-11-24",
+  "category": "food",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Half-price beer and alcohol during happy hour"
+ },
+ {
+  "title": "Colgate toothpaste BOGO",
+  "store": "Drugstore",
+  "start": "2026-11-23",
+  "end": "2026-11-30",
+  "category": "health & beauty",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "brand": "Colgate",
+  "product_type": "toothpaste",
+  "description": "Buy one Colgate toothpaste, get one free"
+ },
+ {
+  "title": "Gain detergent $3 off",
+  "store": "Grocery store",
+  "start": "2026-11-23",
+  "end": "2026-11-30",
+  "category": "grocery",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "brand": "Gain",
+  "product_type": "detergent",
+  "description": "Gain laundry detergent, $3 off"
+ },
+ {
+  "title": "Cordless vacuum 35% off",
+  "store": "Online stores",
+  "start": "2026-11-27",
+  "end": "2026-12-01",
+  "category": "home",
+  "channel": "online",
+  "url": "https://example.com/vacuum",
+  "promo_code": "CLEAN35",
+  "description": "Stick vacuum, cordless, 35% off with code"
+ },
+ {
+  "title": "Car wash 5-pack for $25",
+  "store": "Car wash",
+  "start": "2026-11-23",
+  "end": "2026-12-06",
+  "category": "car",
+  "channel": "in store",
+  "location": "Orem, UT",
+  "description": "Five exterior car washes for $25"
+ },
+ {
+  "title": "Nintendo Switch game sale",
+  "store": "Online stores",
+  "start": "2026-11-27",
+  "end": "2026-12-01",
+  "category": "electronics",
+  "channel": "online",
+  "url": "https://example.com/switch",
+  "description": "Nintendo Switch video games up to 50% off"
+ },
+ {
+  "title": "Wireless gaming headset $40 off",
+  "store": "Electronics store",
+  "start": "2026-11-27",
+  "end": "2026-11-30",
+  "category": "electronics",
+  "channel": "in store & online",
+  "url": "https://example.com/headset",
+  "promo_code": "GAME40",
+  "description": "Gaming headset with mic, wireless headphones, $40 off"
+ },
+ {
+  "title": "Board game BOGO 50%",
+  "store": "Game shop",
+  "start": "2026-11-28",
+  "end": "2026-12-05",
+  "category": "gifts",
+  "channel": "in store",
+  "location": "Provo, UT",
+  "description": "Board games and card games, buy one get one 50% off, great gift for brother or sister"
+ },
+ {
+  "title": "Arcade unlimited play night",
+  "store": "Arcade",
+  "start": "2026-11-28",
+  "category": "entertainment",
+  "channel": "in store",
+  "location": "Orem, UT",
+  "description": "Unlimited video game arcade play for $15"
+ },
+ {
+  "title": "Suspicious mega TV deal",
+  "store": "Unknown site",
+  "start": "2026-11-27",
+  "category": "electronics",
+  "channel": "online",
+  "url": "https://bad.example/tv",
+  "link_safe": false,
+  "description": "85 inch TV 95% off, gaming TV, too good to be true (flagged link)"
+ },
+ {
+  "title": "Expired headphones deal",
+  "store": "Electronics store",
+  "start": "2026-11-01",
+  "end": "2026-11-10",
+  "category": "electronics",
+  "channel": "online",
+  "description": "Headphones 30% off, already over"
+ }
 ]

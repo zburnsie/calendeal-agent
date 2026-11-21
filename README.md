@@ -42,6 +42,9 @@ python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\act
 pip install -r requirements.txt
 cp .env.example .env          # add DEEPSEEK_API_KEY (agent + rerank) and VIRUSTOTAL_API_KEY (link checks); both optional
 
+# check the matching model: 3 test users, their picks, example searches, PASS/FAIL checks
+python scripts/try_profiles.py
+
 # the web app (open http://127.0.0.1:7860, use your browser's phone view for demos)
 python -m app.app
 
