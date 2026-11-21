@@ -1,25 +1,29 @@
 """Deal sources. Each module exposes `fetch() -> list[Deal]`.
 
 To add one: copy sample.py, write fetch(), then add it to SOURCES below.
+Prefer an API or RSS feed over scraping (docs/DATA_SOURCES.md).
 """
 from calendeal.models import Deal
-from calendeal.sources import sample
+from calendeal.sources import local_search, sample, slickdeals
 
-SOURCES = [
-    sample,
-    # maverik,
-    # old_navy,
-]
+SOURCES = {
+    "sample": sample,             # hand-entered deals (data/sample_deals.json), always works offline
+    "slickdeals": slickdeals,     # national/online deals via RSS
+    "local_search": local_search, # Provo/Utah deals via LLM web search (off until CALENDEAL_LOCAL_SEARCH=1)
+}
 
 
-def fetch_all() -> list[Deal]:
+def fetch_all(names: list[str] | None = None) -> list[Deal]:
     deals: list[Deal] = []
-    for src in SOURCES:
+    for name, src in SOURCES.items():
+        if names and name not in names:
+            continue
         try:
             found = src.fetch()
             for d in found:
-                d.source = d.source or src.__name__.rsplit(".", 1)[-1]
+                d.source = d.source or name
             deals.extend(found)
-        except Exception as e:  # one broken scraper shouldn't kill the run
-            print(f"[warn] {src.__name__} failed: {e}")
+            print(f"  {name}: {len(found)} deal(s)")
+        except Exception as e:  # one broken source shouldn't kill the run
+            print(f"[warn] {name} failed: {e}")
     return deals

@@ -1,0 +1,11 @@
+{
+  "name": "Eats Out Emma",
+  "interests": ["cheap eats", "pizza", "burritos", "coffee", "hot drinks", "movie nights"],
+  "categories": ["food", "entertainment"],
+  "stores": ["Maverik"],
+  "notes": "I eat out with roommates most nights and love a good BOGO.",
+  "location": "Provo, UT",
+  "radius_miles": 8,
+  "hitl_mode": "auto",
+  "max_deals_per_week": 6
+}

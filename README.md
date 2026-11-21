@@ -1,76 +1,71 @@
 # CalenDeal Agent
 
-Finds the deals each student cares about and adds them to a dedicated **CalenDeal** calendar in Google Calendar — toggle the calendar off to hide every deal at once, with reminders before each deal starts.
+Finds the deals each student would actually use (on things they already buy) and puts them on a dedicated **CalenDeal** calendar that works in **Apple Calendar and Google Calendar**, with the promo code, link, and a reminder before each deal ends. Toggle the calendar off to hide every deal at once.
+
+**New here, or starting a Claude session?** Read [`CLAUDE.md`](CLAUDE.md), then [`docs/HANDOFF.md`](docs/HANDOFF.md).
+
+| Doc | What's in it |
+|---|---|
+| [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md) | Problem, users, what v1 does, the demo |
+| [`docs/PRIORITIES.md`](docs/PRIORITIES.md) | Tier 1 / 2 / 3 backlog with status |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Pipeline, modules, data model, stack |
+| [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) | RSS/APIs + local agent search, the snapshot workflow, scraping rules |
+| [`docs/GUARDRAILS.md`](docs/GUARDRAILS.md) | VirusTotal middleware, expiry, HITL, privacy |
+| [`docs/EVALUATION.md`](docs/EVALUATION.md) | The 3–4 comparison runs and the metrics |
+| [`docs/TEAM_WORKFLOW.md`](docs/TEAM_WORKFLOW.md) | Claim → branch → handoff → push → tell the chat |
+| [`docs/DECISIONS.md`](docs/DECISIONS.md) | Decision log, open questions, ideas set aside |
 
 ## How it works
 
-```
-Phase 1: find + match                          Phase 2: act
-┌──────────┐   ┌──────────┐   ┌───────────┐    ┌──────────────────────┐
-│ sources/ │──▶│ Deal     │──▶│ matcher   │──▶ │ gcal.py              │
-│ scrapers │   │ objects  │   │ retrieve  │    │ "CalenDeal" calendar │
-└──────────┘   └──────────┘   │ + LLM pick│    │ events + reminders   │
-                              └───────────┘    └──────────────────────┘
-                                    ▲
-                          profiles/<user>.json
-```
-
-| File | Owner | What it does |
-|---|---|---|
-| `calendeal/sources/` | _tbd_ | One module per deal source. Each returns a list of `Deal`. |
-| `calendeal/matcher.py` | _tbd_ | Retrieval (TF-IDF over deals vs. profile), then optional Claude rerank with a one-line "why". |
-| `calendeal/gcal.py` | _tbd_ | Creates the CalenDeal calendar, adds events, dedupes, sets reminders. |
-| `calendeal/main.py` | _tbd_ | CLI that runs the pipeline. |
-| `profiles/*.json` | everyone | One profile per test user (interests, location, budget). |
-
-## What works today
-
-The dashed box isn't built yet: right now deals come from hand-entered sample data. Adding to Google Calendar works once `credentials.json` is set up (see below).
-
 ```mermaid
 flowchart LR
-    A["Sample deals<br/>(typed by hand)"] --> C
-    B["Student profile<br/>interests, stores, avoid list"] --> C
-    X["Real store scrapers<br/>Maverik, Old Navy..."] -.-> A
-
-    C["Remove deals on<br/>the avoid list"] --> D["Score deals against<br/>the profile"]
-    D --> E{"Claude API<br/>key set?"}
-    E -- Yes --> F["Claude picks the best deals<br/>and writes a reason for each"]
-    E -- No --> G["Keep the<br/>top scores"]
-    F --> H["Print picks<br/>in the terminal"]
-    G --> H
-    H --> I{"Dry run?"}
-    I -- Yes --> J["Stop here"]
-    I -- No --> K["Add to 'CalenDeal Agent' calendar<br/>all-day events + reminders<br/>no duplicates"]
-
+    A["RSS / APIs<br/>(Slickdeals)"] --> S
+    B["Agent web search<br/>local Provo deals (todo)"] -.-> S
+    C["Sample deals"] --> S
+    S["Weekly snapshot"] --> M["Middleware<br/>expired · VirusTotal"]
+    M --> R["Match<br/>filters → semantic search → Claude rerank"]
+    P["Profile<br/>intake checkboxes + notes"] --> R
+    R --> H{"HITL mode"}
+    H -- auto --> CAL[".ics calendar<br/>Apple + Google"]
+    H -- approve --> T["User approves picks"] --> CAL
     classDef todo stroke-dasharray: 5 5,color:#888
-    class X todo
+    class B todo
 ```
+
+Not built yet: the local search source, the chat agent, and the web app. See `docs/PRIORITIES.md`.
 
 ## Quickstart
 
 ```bash
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env                                 # add your ANTHROPIC_API_KEY (optional)
+cp .env.example .env          # optional keys: ANTHROPIC_API_KEY (rerank), VIRUSTOTAL_API_KEY (link checks)
 
-python -m calendeal.main --profile profiles/example.json --dry-run
+# try it on the sample deals: print picks for each demo profile
+python -m calendeal.main match --profile profiles/eats_out.json --sources sample --dry-run
+python -m calendeal.main match --profile profiles/grocery_saver.json --sources sample --dry-run
+
+# write a calendar file you can import into Apple/Google Calendar
+python -m calendeal.main match --profile profiles/online_shopper.json --sources sample --yes --ics out/olivia.ics
+
+# weekly "mega scrape" -> data/snapshots/<date>.json, then match against it
+python -m calendeal.main snapshot --check-links
+python -m calendeal.main match --profile profiles/eats_out.json --snapshot latest
 ```
 
-`--dry-run` prints the matched deals without touching your calendar. Drop it once Google auth is set up.
+If the sample deals have expired by the time you run this, add `--today 2026-11-22`.
 
-### Google Calendar setup (one person does this, shares nothing secret)
+### Optional: write straight to Google Calendar
+
+`--gcal` pushes events through the Google Calendar API instead of writing an `.ics` file. Setup:
 
 1. Google Cloud Console → new project → enable **Google Calendar API**.
 2. OAuth consent screen → External → add teammates as **test users**.
 3. Credentials → Create OAuth client ID → **Desktop app** → download as `credentials.json` in the repo root.
-4. First real run opens a browser to sign in and writes `token.json`.
+4. The first `--gcal` run opens a browser to sign in and writes `token.json`.
 
-Both files are in `.gitignore` — never commit them. Each teammate can download the same `credentials.json` from the shared Cloud project (or the owner sends it privately); `token.json` is per person.
+Both files are in `.gitignore`. Never commit them.
 
 ## Working together
 
-- Branch per feature: `git checkout -b scraper-maverik`, open a PR into `main`.
-- Add a new source by copying `calendeal/sources/sample.py` and registering it in `calendeal/sources/__init__.py`.
-- Run tests before pushing: `pytest`
-
+Short version of [`docs/TEAM_WORKFLOW.md`](docs/TEAM_WORKFLOW.md): claim the task in the group chat, branch, run `pytest`, add a `docs/HANDOFF.md` entry, push, open a PR, and tell the chat.

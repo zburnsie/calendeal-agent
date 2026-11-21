@@ -1,4 +1,7 @@
-"""Phase 2: put matched deals on a dedicated Google calendar.
+"""Optional: write matched deals straight to Google Calendar through its API.
+
+The default output is an .ics file (calendeal/ics.py), which works with Apple and Google.
+Use this path if you want events pushed into Google directly.
 
 - Everything goes on one calendar ("CalenDeal Agent"), so the user can hide all deals with one toggle.
 - Deals are all-day events spanning start..end, with a popup reminder before they start.
@@ -15,6 +18,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
+from calendeal.ics import describe
 from calendeal.models import Deal
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
@@ -72,16 +76,12 @@ def existing_deal_ids(svc, cal_id: str) -> set[str]:
 
 def to_event(deal: Deal) -> dict:
     minutes = int(os.getenv("CALENDEAL_REMINDER_MINUTES", "720"))
-    lines = [f"{deal.store} · {deal.channel}"]
-    if deal.reason:
-        lines.append(f"Why you: {deal.reason}")
-    if deal.description:
-        lines.append(deal.description)
-    if deal.url:
-        lines.append(deal.url)
+    summary = f"{deal.title} · {deal.store}"
+    if deal.promo_code:
+        summary += f" · code {deal.promo_code}"
     return {
-        "summary": f"{deal.title} · {deal.store}",
-        "description": "\n".join(lines),
+        "summary": summary,
+        "description": describe(deal),
         "location": deal.location,
         "start": {"date": deal.start.isoformat()},
         "end": {"date": (deal.end + timedelta(days=1)).isoformat()},  # all-day end is exclusive
