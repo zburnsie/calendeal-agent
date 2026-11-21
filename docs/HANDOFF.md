@@ -14,6 +14,25 @@ Template:
 
 ---
 
+## 2026-11-21 — Olivia (+ Claude) — branch `claude/v1`
+
+**Did:** First local run on a real machine: venv (Python 3.11), `pip install -r requirements.txt`, `.env` from the template. `pytest` passes (35), `try_profiles.py --retriever embed` passes every check, the live Slickdeals feed parses (25 deals), `snapshot` works (59 deals), and the Gradio app loads with no key. Confirmed offline that `deepseek-flash` is a valid DeepSeek id and that thinking is sent as disabled. Results and the Slickdeals problems are in `docs/EVALUATION.md` → "Live run log".
+
+**Left / next:**
+1. Put `DEEPSEEK_API_KEY` in `.env`, then run `python scripts/try_profiles.py --llm` (and `--llm --retriever embed`), then `python -m app.app` and the chat examples, including Approve **and** Reject in "Ask me first" mode. This is still the first real test of DeepSeek tool calling.
+2. `CALENDEAL_LOCAL_SEARCH=1 python -m calendeal.main snapshot`: look at the local deals before tuning `QUERIES`.
+3. Slickdeals fixes: take the store from the merchant link in the description; fix the category keywords (see the Live run log).
+4. Leave the made-up `sample` deals out of the real demo snapshot, then take it with `--check-links`.
+
+**Broken or unsure:**
+- Nothing has hit the DeepSeek API yet.
+- `data/snapshots/2026-11-21.json` was not committed on purpose: it mixes in the made-up samples and links weren't checked.
+- Python 3.14 is too new for torch/chromadb wheels. Use 3.11 or 3.12 for the venv.
+
+**Files touched:** `docs/EVALUATION.md`, `docs/HANDOFF.md`.
+
+---
+
 ## 2026-11-21 — Claude (matching check) — branch `claude/v1`
 
 **Did:** Added `scripts/try_profiles.py`: three very different test users (Foodie Fran: food/entertainment, avoids alcohol; Household Hank: grocery/car/home, Tide + Colgate only; Gamer Gwen: electronics/gifts, online). It prints each user's weekly picks and the top results for 3 example chat questions, then runs PASS/FAIL checks. Added 14 more made-up sample deals (34 total), including traps the matcher must skip: a beer deal, other detergent/toothpaste brands, a flagged link, and an expired deal. All checks pass with TF-IDF; the 3 users share 0% of their picks. 35 tests.
