@@ -14,32 +14,36 @@ Finds the deals each student would actually use (on things they already buy) and
 | [`docs/EVALUATION.md`](docs/EVALUATION.md) | The 3–4 comparison runs and the metrics |
 | [`docs/TEAM_WORKFLOW.md`](docs/TEAM_WORKFLOW.md) | Claim → branch → handoff → push → tell the chat |
 | [`docs/DECISIONS.md`](docs/DECISIONS.md) | Decision log, open questions, ideas set aside |
+| [`docs/LAB_PATTERNS.md`](docs/LAB_PATTERNS.md) | Which class lab each part of the code follows |
 
 ## How it works
 
 ```mermaid
 flowchart LR
     A["RSS / APIs<br/>(Slickdeals)"] --> S
-    B["Agent web search<br/>local Provo deals (todo)"] -.-> S
+    B["Web search + LLM<br/>local Provo deals"] --> S
     C["Sample deals"] --> S
     S["Weekly snapshot"] --> M["Middleware<br/>expired · VirusTotal"]
-    M --> R["Match<br/>filters → semantic search → Claude rerank"]
+    M --> R["Match<br/>filters → semantic search → DeepSeek rerank"]
     P["Profile<br/>intake checkboxes + notes"] --> R
     R --> H{"HITL mode"}
     H -- auto --> CAL[".ics calendar<br/>Apple + Google"]
     H -- approve --> T["User approves picks"] --> CAL
-    classDef todo stroke-dasharray: 5 5,color:#888
-    class B todo
+    M --> A["Chat agent<br/>search · add · remove"]
+    A --> CAL
 ```
 
-Not built yet: the local search source, the chat agent, and the web app. See `docs/PRIORITIES.md`.
+v1 is built (web app, chat agent, local search). Next steps are in `docs/HANDOFF.md`.
 
 ## Quickstart
 
 ```bash
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env          # optional keys: ANTHROPIC_API_KEY (rerank), VIRUSTOTAL_API_KEY (link checks)
+cp .env.example .env          # add DEEPSEEK_API_KEY (agent + rerank) and VIRUSTOTAL_API_KEY (link checks); both optional
+
+# the web app (open http://127.0.0.1:7860, use your browser's phone view for demos)
+python -m app.app
 
 # try it on the sample deals: print picks for each demo profile
 python -m calendeal.main match --profile profiles/eats_out.json --sources sample --dry-run

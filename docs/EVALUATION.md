@@ -19,7 +19,7 @@ Use one fixed snapshot (`data/snapshots/<week>.json`) and the 3 demo profiles in
 | 1 | TF-IDF retrieval only (baseline) | What the original scaffold did |
 | 2 | Embeddings (all-MiniLM-L6-v2 + Chroma) | Semantic search from Lab 1 |
 | 3 | Embeddings + category filter + store/brand boosts | Uses the intake checkboxes |
-| 4 | Run 3 + Claude rerank with reasons | The full agent |
+| 4 | Run 3 + LLM rerank with reasons (DeepSeek) | The full agent |
 
 Keep the snapshot and profiles fixed across runs. Record results in a table in this file, with the date and the git commit for each run.
 

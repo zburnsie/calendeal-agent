@@ -84,7 +84,7 @@ def main() -> None:
     ap.add_argument("--snapshot", help="match against a saved snapshot: 'latest', a date, or a path")
     ap.add_argument("--check-links", action="store_true", help="snapshot: run VirusTotal on every link (slow, 4/min)")
     ap.add_argument("--retriever", choices=["auto", "embed", "tfidf"], default="auto")
-    ap.add_argument("--no-llm", action="store_true", help="skip the Claude rerank step")
+    ap.add_argument("--no-llm", action="store_true", help="skip the LLM rerank step")
     ap.add_argument("--today", help="pretend today is this date (YYYY-MM-DD), for demos on an old snapshot")
     ap.add_argument("--ics", help="where to write the .ics file (default out/<profile>.ics)")
     ap.add_argument("--gcal", action="store_true", help="write to Google Calendar via API instead of .ics")

@@ -9,6 +9,7 @@ You're helping one of 5 teammates build **CalenDeal**: an agent that finds deals
    - `docs/PRIORITIES.md`: what to work on (finish Tier 1 before Tier 2)
    - `docs/PRODUCT_SPEC.md` and `docs/ARCHITECTURE.md`: what we're building and how it fits together
    - `docs/GUARDRAILS.md` and `docs/DATA_SOURCES.md` before touching sources, links, or the calendar
+   - `docs/LAB_PATTERNS.md`: write code the way our class labs do
 2. Ask your teammate which Tier item they're taking, and remind them to claim it in the group chat.
 3. Work on a branch: `git checkout -b <name>/<thing>`.
 
@@ -19,7 +20,8 @@ You're helping one of 5 teammates build **CalenDeal**: an agent that finds deals
 - **Every deal link goes through `calendeal/middleware.py`** before it can reach a calendar.
 - The agent writes **only to its own CalenDeal calendar**, respects `hitl_mode` and `max_deals_per_week`, and never buys anything or sends messages as the user.
 - Keep `Deal` / `UserProfile` in `calendeal/models.py` as the single shared data shape. Add fields with defaults so old snapshots still load.
-- Reuse the lab patterns the team knows (Chroma + all-MiniLM-L6-v2, the LangChain `create_agent` + `HumanInTheLoopMiddleware`, Gradio) unless there's a reason not to.
+- Reuse the lab patterns the team knows (Chroma + all-MiniLM-L6-v2, the LangChain `create_agent` + `HumanInTheLoopMiddleware`, Pydantic structured output with a bounded retry, Gradio) unless there's a reason not to. See `docs/LAB_PATTERNS.md`.
+- Get the LLM only through `calendeal/llm.py` (DeepSeek by default). Everything must still work with no API key.
 - Never commit `.env`, `credentials.json`, or `token.json`.
 - Tests must pass: `pytest`. Add a test for anything you add.
 

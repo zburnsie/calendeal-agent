@@ -70,6 +70,12 @@ class Deal:
         d.pop("reason", None)
         return d
 
+    def short(self) -> str:
+        """One line for chat/tool output."""
+        code = f" · code {self.promo_code}" if self.promo_code else ""
+        when = f"{self.start:%a %b %d}" + (f"–{self.end:%b %d}" if self.end != self.start else "")
+        return f"[{self.deal_id}] {self.title} @ {self.store} ({self.category}, {self.channel}, {when}){code}"
+
     @classmethod
     def from_dict(cls, d: dict) -> "Deal":
         known = {f.name for f in fields(cls)}

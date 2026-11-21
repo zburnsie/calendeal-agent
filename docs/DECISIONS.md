@@ -18,14 +18,18 @@ Decisions from the kickoff meeting (Nov 2026), plus anything decided later. Newe
 | D12 | Tiered backlog: Tier 1 must / Tier 2 hope / Tier 3 nice | Avoid scope bloat | Kickoff |
 | D13 | Work in turns, claim in the chat, leave a handoff `.md` after every session | Avoid merge conflicts; anyone can pick up the work | Kickoff |
 | D14 | Everything lives in the GitHub repo, including class files | The last project's shared doc got messy | Kickoff |
+| D15 | LLM = **DeepSeek `deepseek-flash`** through LangChain `init_chat_model`, thinking mode off; swappable with `CALENDEAL_LLM` | Team asked for a cheap API. Official price: $0.15–0.30 per 1M input, $0.60–1.20 per 1M output (off-peak/peak). Thinking mode needs reasoning_content passed back once tools are used, which breaks the agent loop | v1 build, Nov 21 |
+| D16 | Web app in **Gradio** for v1 | Everyone used it in Lab 2; mobile layout via CSS | v1 build |
+| D17 | Local search uses **DuckDuckGo via `ddgs`** (free, no key) + LLM extraction from snippets only; a deal is dropped unless its URL was in the search results | DeepSeek has no built-in web search; snippets aren't scraping; the URL rule blocks invented deals | v1 build |
+| D18 | The app and agent work **without any API key** (retrieval order, search-only chat) | Demos never break on a missing key or quota | v1 build |
 
 ## Open questions
 
 - Is reading the Slickdeals RSS feed once a week OK with the professor, given its robots.txt disallows automated fetching of that path? (See `DATA_SOURCES.md`.)
 - Which local deal sources are actually reachable and allowed? (Facebook groups are mostly behind a login.)
-- Gradio vs. a custom front end (e.g., React) for the web app? The docs recommend Gradio for v1 since everyone used it in the labs. Revisit if the deal-card or swipe UI gets hard to build in Gradio.
+- Gradio was chosen for v1 (D16). Revisit (e.g., React) only if the swipe-to-dismiss UI is a must.
 - Host the `.ics` feed somewhere (so subscriptions auto-update) or just offer a download for the demo?
-- Which LLM: Claude Haiku (needs a key) or an Ollama model like in the labs?
+- ~~Which LLM?~~ DeepSeek (D15).
 - Brand-loyal vs. "show me alternatives": default per category?
 
 ## Ideas we considered and set aside

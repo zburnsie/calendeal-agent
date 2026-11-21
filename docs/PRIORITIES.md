@@ -11,14 +11,14 @@ Status key: ✅ done · 🟡 started · ⬜ not started. Update it when you fini
 |---|---|---|---|
 | 1.1 | Problem statement written, with real cited stats | 🟡 | `docs/PRODUCT_SPEC.md`. Stats need sources. |
 | 1.2 | Deal ingestion from **APIs / RSS** (Slickdeals feed first) | 🟡 | `calendeal/sources/slickdeals.py` |
-| 1.3 | **Local deals for Provo/Utah** via agent web search, limited by location/radius | ⬜ | Stub in `calendeal/sources/local_search.py` |
+| 1.3 | **Local deals for Provo/Utah** via agent web search, limited by location/radius | 🟡 | `sources/local_search.py` built + tested offline; needs a live run with a DeepSeek key |
 | 1.4 | One-week **snapshot** ("mega scrape") saved to `data/snapshots/` | 🟡 | `python -m calendeal.main snapshot` |
 | 1.5 | **Middleware**: drop expired deals + check every link with **VirusTotal**, run once per snapshot, within free API limits | 🟡 | `calendeal/middleware.py` |
-| 1.6 | **Semantic search** over deals (embeddings + Chroma, like Lab 1), with a TF-IDF fallback | 🟡 | `calendeal/matcher.py` |
-| 1.7 | **RAG chat agent** (single agent) that answers from the deal store and can add to the calendar | ⬜ | Reuse the Lab 2 RAG chatbot pattern |
-| 1.8 | **Calendar output that works on Apple and Google**: `.ics` file / subscribable feed | 🟡 | `calendeal/ics.py`. Google API path stays as an option. |
-| 1.9 | **Intake**: category checkboxes + free-text notes → `UserProfile` | ⬜ | UI not built yet; the profile format is done |
-| 1.10 | **Web app, mobile-friendly**: intake, deal list, calendar link, chat | ⬜ | Gradio Blocks recommended (we used it in labs) |
+| 1.6 | **Semantic search** over deals (embeddings + Chroma, like Lab 1), with a TF-IDF fallback | 🟡 | `calendeal/matcher.py`; embed path needs a local run |
+| 1.7 | **RAG chat agent** (single agent) that answers from the deal store and can add to the calendar | 🟡 | `calendeal/agent.py`; tested with a scripted model, needs a live DeepSeek run |
+| 1.8 | **Calendar output that works on Apple and Google**: `.ics` file / subscribable feed | ✅ | `ics.py` + per-user `store.py`; download in the app. Hosted subscribe URL = later |
+| 1.9 | **Intake**: category checkboxes + free-text notes → `UserProfile` | ✅ | App "Start" tab |
+| 1.10 | **Web app, mobile-friendly**: intake, deal list, calendar link, chat | ✅ v1 | `app/app.py` (Gradio). Polish welcome |
 | 1.11 | **2–3 demo profiles** that get visibly different results | ✅ | `profiles/` |
 | 1.12 | **Evaluation runs**: compare matcher settings 3–4 times and report the results | ⬜ | `docs/EVALUATION.md` |
 | 1.13 | Weekly limit on deals per user | ✅ | `max_deals_per_week` |
@@ -27,13 +27,13 @@ Status key: ✅ done · 🟡 started · ⬜ not started. Update it when you fini
 
 | # | Item | Status | Notes |
 |---|---|---|---|
-| 2.1 | **Human-in-the-loop toggle**: auto-add vs. approve-first | 🟡 | `hitl_mode` on the profile. Approve flow in the UI / LangChain `HumanInTheLoopMiddleware` |
-| 2.2 | **Tappable deal cards in chat** to approve/reject | ⬜ | |
-| 2.3 | **Promo code + direct link** in each calendar event | 🟡 | `Deal.promo_code` goes into the event description |
-| 2.4 | Remove a deal from the app → it disappears from the CalenDeal calendar (swipe to dismiss) | ⬜ | Easy with the `.ics` feed: regenerate it without the deal |
-| 2.5 | "**Look extra hard for X this week**" → on-demand targeted search | ⬜ | |
-| 2.6 | **Brand-loyal vs. "any brand"** per product (Tide only vs. any detergent on sale) | 🟡 | `brand_loyal` list on the profile |
-| 2.7 | "What we learned about you" editable profile page | ⬜ | |
+| 2.1 | **Human-in-the-loop toggle**: auto-add vs. approve-first | ✅ | Picks tab (checkboxes) + chat (`HumanInTheLoopMiddleware`, Approve/Reject buttons) |
+| 2.2 | **Tappable deal cards in chat** to approve/reject | 🟡 | Cards + Approve/Reject shown when the agent pauses; per-card toggles = later |
+| 2.3 | **Promo code + direct link** in each calendar event | ✅ | In event title + notes |
+| 2.4 | Remove a deal from the app → it disappears from the CalenDeal calendar (swipe to dismiss) | 🟡 | "Remove selected" on Calendar tab + chat tool; dismissed deals never return. Swipe gesture = later |
+| 2.5 | "**Look extra hard for X this week**" → on-demand targeted search | 🟡 | Chat tool `find_local_deals` |
+| 2.6 | **Brand-loyal vs. "any brand"** per product (Tide only vs. any detergent on sale) | ✅ | `brand_loyal` on the profile + intake field |
+| 2.7 | "What we learned about you" editable profile page | ✅ | Top of "This week"; edit on Start |
 | 2.8 | Agent gets its **own inbox** and signs up for store promo emails, then reads them as a source | ⬜ | Phase-2 idea from the meeting |
 | 2.9 | Facebook group / community deal sources (public only) | ⬜ | Check terms first |
 

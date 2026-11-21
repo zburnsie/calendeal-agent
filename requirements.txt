@@ -1,9 +1,20 @@
 # core
-anthropic>=0.40
 scikit-learn>=1.5
+pydantic>=2.7
 requests>=2.32
 python-dotenv>=1.0
 pytest>=8.0
+
+# agent + LLM (Lab patterns: init_chat_model, create_agent, HumanInTheLoopMiddleware)
+langchain>=1.0
+langgraph>=1.0
+langchain-deepseek>=0.1
+
+# web app
+gradio>=5.0
+
+# local deal search (free web search, no key)
+ddgs>=9.0
 
 # semantic search (Lab 1 stack). First run downloads the all-MiniLM-L6-v2 model.
 # Without these installed, the matcher falls back to TF-IDF automatically.

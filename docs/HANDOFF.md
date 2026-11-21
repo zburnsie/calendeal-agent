@@ -14,6 +14,32 @@ Template:
 
 ---
 
+## 2026-11-21 — Claude (v1 build) — branch `claude/v1`
+
+**Did:**
+- **LLM = DeepSeek** (`calendeal/llm.py`): `deepseek-flash` through LangChain `init_chat_model`, thinking mode off (DeepSeek requires passing reasoning back once tools are used, which the agent loop doesn't do). Swap with `CALENDEAL_LLM`. `structured()` = Pydantic + bounded retry, like the Lab 4 script. The matcher's rerank now uses it.
+- **Local deal search** (`sources/local_search.py`): DuckDuckGo via `ddgs` (free) → LLM pulls deals out of the snippets → a deal is kept only if its URL was one of the search results.
+- **Chat agent** (`calendeal/agent.py`): `create_agent` with tools `search_deals`, `weekly_picks`, `find_local_deals`, `add_to_calendar`, `remove_from_calendar`, `my_calendar`. In approve mode, `HumanInTheLoopMiddleware` pauses `add_to_calendar` until the user taps Approve. Works with no key too (falls back to plain search).
+- **Per-user store** (`calendeal/store.py`): profile, calendar, dismissed deals; the `.ics` is rebuilt on every change, so removing a deal removes it from the calendar.
+- **Web app** (`app/app.py`, Gradio, phone-width): Start (Pinterest-style intake) → This week ("what we learned about you" + picks to approve) → Calendar (download `.ics`, remove deals) → Chat (with Approve/Reject when the agent wants to add).
+- `docs/LAB_PATTERNS.md` maps each lab to where its pattern is used.
+- Tests: 33 passing (agent with a scripted fake model including approve/reject, store, local search, rerank). Clicked through the app in headless Chrome at phone size.
+
+**Left / next:**
+1. **Run it live with a DeepSeek key** (I had no key and no network to DeepSeek): put `DEEPSEEK_API_KEY` in `.env`, run `python -m app.app`, try the chat examples. Watch for tool-call problems; if the agent loops or errors, try `CALENDEAL_LLM=anthropic:claude-haiku-4-5` to see whether it's DeepSeek-specific.
+2. Live-test `CALENDEAL_LOCAL_SEARCH=1 python -m calendeal.main snapshot` and look at what the local deals look like. Tune `QUERIES` in `local_search.py`.
+3. Take the real demo snapshot (`snapshot --check-links`), commit it, and run `docs/EVALUATION.md`.
+4. UI polish: per-card toggles in chat, swipe to dismiss, a hosted `.ics` subscribe URL.
+
+**Broken or unsure:**
+- Nothing has run against the real DeepSeek API, Slickdeals, or DuckDuckGo yet (no network from the build machine). The code paths are tested with fakes.
+- The demo picks still come from the made-up `sample_deals.json` until someone takes a real snapshot.
+- Gradio state is in memory: restarting the app clears chat (profiles and calendars are saved on disk under `data/users/`, which is git-ignored).
+
+**Files touched:** `calendeal/llm.py` (new), `calendeal/agent.py` (new), `calendeal/store.py` (new), `calendeal/sources/local_search.py`, `calendeal/matcher.py`, `calendeal/models.py`, `app/` (new), `tests/` (fakes + 3 new files), `docs/*`, `README.md`, `CLAUDE.md`, `.env.example`, `requirements.txt`, `.gitignore`.
+
+---
+
 ## 2026-11-21 — Claude, from the kickoff transcript — branch `kickoff-plan-and-fixes`
 
 **Did:**
