@@ -6,15 +6,18 @@
        "tfidf": TF-IDF cosine similarity (no downloads; used by tests and as the fallback)
        "auto":  embed if chromadb + sentence-transformers are installed, else tfidf
   3. Boosts: favorite stores, preferred channel, loyal brand.
-  4. Rerank: if ANTHROPIC_API_KEY is set, Claude picks the final set and writes a "why you" line.
+  4. Rerank: if an LLM key is set (DeepSeek by default, see llm.py), the model picks the final set
+     and writes a "why you" line. Structured output via Pydantic, with a bounded retry.
 """
 from __future__ import annotations
 
 import json
 import os
-import re
 from datetime import date
 
+from pydantic import BaseModel, Field
+
+from calendeal import llm
 from calendeal.middleware import clean
 from calendeal.models import Deal, UserProfile
 
@@ -110,15 +113,46 @@ def retrieve(
     return [d for d in ranked if d.score > 0][:top_n]
 
 
+def search(
+    deals: list[Deal],
+    profile: UserProfile,
+    query: str,
+    k: int = 6,
+    retriever: str = "auto",
+    today: date | None = None,
+    respect_categories: bool = False,
+) -> list[Deal]:
+    """Semantic search for the chat agent: the user's question, not their whole profile, is the query.
+
+    Still applies the safety filters (expired, flagged links), the avoid list and brand loyalty.
+    Categories are NOT enforced by default: if they ask about tires, show tires.
+    """
+    if not respect_categories:
+        profile = UserProfile(**{**profile.__dict__, "categories": []})
+    deals = hard_filter(deals, profile, today)
+    if not deals or not query.strip():
+        return []
+    if retriever == "auto":
+        retriever = "embed" if _embed_available() else "tfidf"
+    scores = _embed_scores(deals, query) if retriever == "embed" else _tfidf_scores(deals, query)
+    for d, s in zip(deals, scores):
+        d.score = round(s, 4)
+    ranked = sorted(deals, key=lambda d: d.score, reverse=True)
+    return [d for d in ranked if d.score > 0][:k]
+
+
 # ---------- 4. rerank ----------
 
-def rerank_with_llm(candidates: list[Deal], profile: UserProfile, use_llm: bool = True) -> list[Deal]:
-    key = os.getenv("ANTHROPIC_API_KEY")
-    if not use_llm or not key or not candidates:
-        return candidates[: profile.max_deals_per_week]
+class Pick(BaseModel):
+    i: int = Field(description="index of the deal in the candidate list")
+    reason: str = Field(description="under 12 words, specific to this person")
 
-    import anthropic
 
+class Picks(BaseModel):
+    picks: list[Pick]
+
+
+def rerank_prompt(candidates: list[Deal], profile: UserProfile) -> str:
     listing = "\n".join(
         f"{i}. {d.title} @ {d.store} ({d.category}, {d.channel}, {d.start}–{d.end})"
         f"{' code ' + d.promo_code if d.promo_code else ''} {d.description[:200]}"
@@ -129,35 +163,31 @@ def rerank_with_llm(candidates: list[Deal], profile: UserProfile, use_llm: bool 
         "brand_loyal": profile.brand_loyal, "notes": profile.notes, "location": profile.location,
         "prefers_online": profile.prefers_online,
     }
-    prompt = (
+    return (
         "You pick deals for a college student. Only pick deals on things they would buy anyway; "
-        "don't push extra spending. Prefer variety over five deals from one store.\n"
+        "don't push extra spending. Prefer variety over several deals from one store.\n"
         f"Profile: {json.dumps(about)}\n\n"
         f"Candidate deals:\n{listing}\n\n"
-        f"Choose at most {profile.max_deals_per_week} that this person would actually use. "
-        'Reply with only JSON: [{"i": <number>, "reason": "<under 12 words, specific to this person>"}]'
+        f"Choose at most {profile.max_deals_per_week} that this person would actually use, best first, "
+        "each with a short reason written to them."
     )
-    client = anthropic.Anthropic(api_key=key)
-    msg = client.messages.create(
-        model=os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5"),
-        max_tokens=800,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    text = msg.content[0].text
-    try:
-        picks = json.loads(re.search(r"\[.*\]", text, re.S).group(0))
-    except Exception:
-        print("[warn] couldn't parse LLM response; using retrieval order")
+
+
+def rerank_with_llm(candidates: list[Deal], profile: UserProfile, use_llm: bool = True, model=None) -> list[Deal]:
+    """LLM picks the final set and writes a 'why you' line. Falls back to retrieval order with no model."""
+    if not use_llm or not candidates:
+        return candidates[: profile.max_deals_per_week]
+    result = llm.structured(Picks, rerank_prompt(candidates, profile), model=model)
+    if result is None:
         return candidates[: profile.max_deals_per_week]
 
     chosen, seen = [], set()
-    for p in picks:
-        i = int(p.get("i", -1))
-        if 0 <= i < len(candidates) and i not in seen:
-            seen.add(i)
-            candidates[i].reason = str(p.get("reason", ""))[:120]
-            chosen.append(candidates[i])
-    return chosen[: profile.max_deals_per_week]
+    for p in result.picks:
+        if 0 <= p.i < len(candidates) and p.i not in seen:
+            seen.add(p.i)
+            candidates[p.i].reason = p.reason[:120]
+            chosen.append(candidates[p.i])
+    return chosen[: profile.max_deals_per_week] or candidates[: profile.max_deals_per_week]
 
 
 def match(
@@ -166,5 +196,6 @@ def match(
     retriever: str = "auto",
     use_llm: bool = True,
     today: date | None = None,
+    model=None,
 ) -> list[Deal]:
-    return rerank_with_llm(retrieve(deals, profile, retriever=retriever, today=today), profile, use_llm)
+    return rerank_with_llm(retrieve(deals, profile, retriever=retriever, today=today), profile, use_llm, model)

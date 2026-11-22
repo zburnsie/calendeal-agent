@@ -18,3 +18,4 @@ venv/
 # generated
 out/
 chroma/
+data/users/
