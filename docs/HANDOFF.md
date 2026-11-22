@@ -23,13 +23,18 @@ Template:
 2. `CALENDEAL_LOCAL_SEARCH=1 python -m calendeal.main snapshot`: look at the local deals before tuning `QUERIES`.
 3. Slickdeals fixes: take the store from the merchant link in the description; fix the category keywords (see the Live run log).
 4. Leave the made-up `sample` deals out of the real demo snapshot, then take it with `--check-links`.
+5. **Deal sources: no web scraping** (D7 replaced it). What we have: one Slickdeals RSS feed (works live, national/online only, robots.txt question still open with the professor) and `local_search.py` (DuckDuckGo snippets + LLM, never run live). Next person:
+   - Run local search live (step 2) and judge whether it finds real Provo deals with dates and codes.
+   - Find 1–2 real deal **APIs or feeds whose terms allow this use**, especially local and student deals, and add each as a `sources/<name>.py` with `fetch()` (see `DATA_SOURCES.md` → "Rules for adding a source").
+   - Turn on the other Slickdeals feeds (Popular, Coupons, Freebies in `FEEDS`) once the professor says the feed is OK.
+   - Make `radius_miles` actually filter local deals.
 
 **Broken or unsure:**
 - Nothing has hit the DeepSeek API yet.
 - `data/snapshots/2026-11-21.json` was not committed on purpose: it mixes in the made-up samples and links weren't checked.
 - Python 3.14 is too new for torch/chromadb wheels. Use 3.11 or 3.12 for the venv.
 
-**Files touched:** `docs/EVALUATION.md`, `docs/HANDOFF.md`.
+**Files touched:** `docs/EVALUATION.md`, `docs/HANDOFF.md`, `app/app.py` (Inter font, tabs fit on one row at phone width).
 
 ---
 
