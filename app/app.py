@@ -40,8 +40,15 @@ CATEGORY_LABELS = {
 LABEL_TO_CAT = {v: k for k, v in CATEGORY_LABELS.items()}
 DEMO_PROFILES = {p.stem: p for p in sorted((ROOT / "profiles").glob("*.json"))}
 
+# Inter for all text (clean, professional); system fonts as fallback if Google Fonts can't load.
+THEME = gr.themes.Soft(
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+    font_mono=[gr.themes.GoogleFont("IBM Plex Mono"), "ui-monospace", "Menlo", "monospace"],
+)
+
 CSS = """
-.gradio-container {max-width: 520px !important; margin: 0 auto !important;}
+.gradio-container {max-width: 520px !important; margin: 0 auto !important;
+                   font-feature-settings: "cv11", "ss01"; letter-spacing: -0.005em;}
 .deal {border: 1px solid var(--border-color-primary); border-radius: 14px; padding: 12px 14px; margin: 8px 0;
        background: var(--background-fill-secondary);}
 .deal h4 {margin: 0 0 4px 0; font-size: 1.05em;}
@@ -51,6 +58,8 @@ CSS = """
         background: var(--color-accent-soft); }
 .badge.warn {background: #fde68a; color: #78350f;}
 .empty {opacity: .7; text-align: center; padding: 18px;}
+/* keep all 4 tabs on one row at phone width */
+.tab-container button {padding: 0 10px !important; font-size: 14px !important;}
 """
 
 
@@ -324,5 +333,5 @@ def build() -> gr.Blocks:
 
 
 if __name__ == "__main__":
-    build().launch(theme=gr.themes.Soft(), css=CSS, server_name=os.getenv("HOST", "127.0.0.1"),
+    build().launch(theme=THEME, css=CSS, server_name=os.getenv("HOST", "127.0.0.1"),
                    server_port=int(os.getenv("PORT", "7860")), allowed_paths=[str(ROOT / "data")])
