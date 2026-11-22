@@ -1,0 +1,11 @@
+{
+  "name": "Online Olivia",
+  "interests": ["running shoes", "laptop for school", "Christmas gifts", "clothes", "free shipping"],
+  "categories": ["clothing", "electronics", "gifts", "shopping"],
+  "stores": ["Old Navy"],
+  "notes": "Looking for Black Friday and Cyber Monday deals for Christmas shopping.",
+  "location": "Provo, UT",
+  "prefers_online": true,
+  "hitl_mode": "approve",
+  "max_deals_per_week": 8
+}

@@ -1,9 +1,19 @@
-google-api-python-client>=2.130
-google-auth-oauthlib>=1.2
-google-auth-httplib2>=0.2
+# core
 anthropic>=0.40
 scikit-learn>=1.5
 requests>=2.32
-beautifulsoup4>=4.12
 python-dotenv>=1.0
 pytest>=8.0
+
+# semantic search (Lab 1 stack). First run downloads the all-MiniLM-L6-v2 model.
+# Without these installed, the matcher falls back to TF-IDF automatically.
+chromadb>=0.5
+sentence-transformers>=3.0
+
+# optional: write straight to Google Calendar (python -m calendeal.main match --gcal)
+google-api-python-client>=2.130
+google-auth-oauthlib>=1.2
+google-auth-httplib2>=0.2
+
+# optional: only if a source really has to scrape HTML
+beautifulsoup4>=4.12

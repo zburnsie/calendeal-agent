@@ -1,0 +1,11 @@
+{
+  "name": "Grocery Saver Gabe",
+  "interests": ["groceries", "laundry detergent", "toothpaste", "paper towels", "oil change"],
+  "categories": ["grocery", "health & beauty", "car"],
+  "brand_loyal": {"detergent": "Tide", "toothpaste": "Crest"},
+  "notes": "Married student, we cook at home. Only Tide for laundry.",
+  "location": "Orem, UT",
+  "radius_miles": 15,
+  "hitl_mode": "approve",
+  "max_deals_per_week": 8
+}
